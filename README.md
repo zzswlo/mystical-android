@@ -16,7 +16,7 @@
 
 - **开发语言**: Java
 - **最低 SDK**: 21 (Android 5.0)
-- **目标 SDK**: 33 (Android 13)
+- **目标 SDK**: 34 (Android 14)
 - **UI 框架**: WebView + Material Design
 
 ## 项目结构

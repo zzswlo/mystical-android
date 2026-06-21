@@ -3,15 +3,16 @@ package com.mystical.divination;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,17 +25,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 全屏沉浸式
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
-        controller.hide(android.view.WindowInsets.Type.systemBars());
+        controller.hide(WindowInsetsCompat.Type.systemBars());
 
         setContentView(R.layout.activity_main);
 
         webView = findViewById(R.id.webView);
         progressBar = findViewById(R.id.progressBar);
 
-        // WebView 配置
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -44,13 +43,10 @@ public class MainActivity extends AppCompatActivity {
         settings.setTextZoom(100);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-
-        // 禁止缩放
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
 
-        // WebViewClient
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -59,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // WebChromeClient
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -72,17 +67,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 加载本地网页
-        webView.loadUrl("file:///android_asset/www/index.html");
-    }
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    finish();
+                }
+            }
+        });
 
-    @Override
-    public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
-        }
+        webView.loadUrl("file:///android_asset/www/index.html");
     }
 
     @Override
