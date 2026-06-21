@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>塔罗牌图片测试</title>
+  <style>
+    body { background: #1a1611; color: #f5f0e8; font-family: sans-serif; padding: 20px; }
+    .card { display: inline-block; margin: 10px; text-align: center; }
+    .card img { width: 150px; height: 225px; object-fit: cover; border: 2px solid #d4a853; border-radius: 8px; }
+    .card p { margin-top: 8px; color: #d4a853; }
+  </style>
+</head>
+<body>
+  <h1>塔罗牌图片测试</h1>
+  <div id="cards"></div>
+  <script>
+    const cards = [
+      { id: 0, name: '愚者', file: '00_Fool.jpg' },
+      { id: 1, name: '魔术师', file: '01_Magician.jpg' },
+      { id: 2, name: '女祭司', file: '02_HighPriestess.jpg' },
+      { id: 3, name: '女皇', file: '03_Empress.jpg' },
+      { id: 4, name: '皇帝', file: '04_Emperor.jpg' },
+    ];
+
+    const baseUrl = 'https://cdn.jsdelivr.net/gh/mixvlad/TarotCards@main/tarot/rider-waite/720px';
+    const container = document.getElementById('cards');
+
+    cards.forEach(card => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <img src="${baseUrl}/${card.file}" alt="${card.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22150%22><rect fill=%22%232a2319%22 width=%22100%22 height=%22150%22/><text x=%2250%22 y=%2280%22 text-anchor=%22middle%22 fill=%22%23d4a853%22 font-size=%2214%22>${card.name}</text></svg>'">
+        <p>${card.name}</p>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>
